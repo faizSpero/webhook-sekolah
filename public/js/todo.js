@@ -20,7 +20,13 @@
     };
 
     const writeItems = (items) => {
-        localStorage.setItem(storageKey, JSON.stringify(items));
+        try {
+            localStorage.setItem(storageKey, JSON.stringify(items));
+            return true;
+        } catch (error) {
+            console.warn('Unable to save to-do items to localStorage.', error);
+            return false;
+        }
     };
 
     let items = readItems();
@@ -54,6 +60,7 @@
             remove.type = 'button';
             remove.className = 'todo-remove';
             remove.textContent = 'Delete';
+            remove.setAttribute('aria-label', `Delete task: ${item.text}`);
             remove.addEventListener('click', () => {
                 items = items.filter((_, i) => i !== index);
                 writeItems(items);
