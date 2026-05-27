@@ -18,6 +18,6 @@
     <ul id="todo-list" class="todo-list" aria-live="polite"></ul>
 </main>
 
-<script src="{{ asset('js/todo.js') }}" defer></script>
+<script src="{{ asset('js/todo.js') }}"></script>
 </body>
 </html>

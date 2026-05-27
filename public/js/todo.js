@@ -14,6 +14,7 @@
             const parsed = value ? JSON.parse(value) : [];
             return Array.isArray(parsed) ? parsed : [];
         } catch (error) {
+            console.warn('Unable to parse to-do items from localStorage.', error);
             return [];
         }
     };
