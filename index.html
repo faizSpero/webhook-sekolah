@@ -105,6 +105,14 @@
         localStorage.setItem(storageKey, JSON.stringify(todos));
       };
 
+      const generateTodoId = () => {
+        if (window.crypto && typeof window.crypto.randomUUID === "function") {
+          return window.crypto.randomUUID();
+        }
+
+        return Date.now().toString(36) + Math.random().toString(36).slice(2);
+      };
+
       const renderTodos = () => {
         list.innerHTML = "";
 
@@ -149,7 +157,7 @@
         }
 
         todos.push({
-          id: Date.now().toString(36) + Math.random().toString(36).slice(2),
+          id: generateTodoId(),
           text,
           completed: false,
         });
