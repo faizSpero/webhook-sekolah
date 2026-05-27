@@ -32,7 +32,7 @@
     let items = readItems();
 
     const render = () => {
-        list.innerHTML = '';
+        const fragment = document.createDocumentFragment();
 
         items.forEach((item, index) => {
             const li = document.createElement('li');
@@ -71,8 +71,10 @@
             label.appendChild(text);
             li.appendChild(label);
             li.appendChild(remove);
-            list.appendChild(li);
+            fragment.appendChild(li);
         });
+
+        list.replaceChildren(fragment);
     };
 
     form.addEventListener('submit', (event) => {

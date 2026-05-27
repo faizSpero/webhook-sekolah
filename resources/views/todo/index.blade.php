@@ -11,7 +11,7 @@
     <h1>To-Do List</h1>
 
     <form id="todo-form" class="todo-form">
-        <label for="todo-input">Task</label>
+        <label for="todo-input" class="sr-only">Task</label>
         <input id="todo-input" type="text" placeholder="Add a task..." autocomplete="off" required>
         <button type="submit" aria-label="Add new task">Add</button>
     </form>
