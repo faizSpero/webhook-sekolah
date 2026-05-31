@@ -26,6 +26,7 @@ Route::prefix('admin')
         Route::resource('agendas', AgendaController::class)->except(['show']);
 
         Route::get('/scores/import', [StudentScoreController::class, 'importForm'])->name('scores.import.form');
+        Route::get('/scores/template', [StudentScoreController::class, 'downloadTemplate'])->name('scores.template');
         Route::post('/scores/import', [StudentScoreController::class, 'import'])->name('scores.import');
         Route::resource('scores', StudentScoreController::class)->except(['show']);
 
