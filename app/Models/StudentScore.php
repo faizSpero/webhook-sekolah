@@ -12,6 +12,8 @@ class StudentScore extends Model
         'subject',
         'score',
         'score_date',
+        'semester',
+        'tahun_akademik',
         'notes',
     ];
 
