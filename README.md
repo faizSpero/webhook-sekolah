@@ -138,6 +138,10 @@ php artisan test
 | `/admin/events` | Paginated list of all webhook events (filter by status/source/type) |
 | `/admin/events/{id}` | Full event detail with raw payload and headers |
 | `/admin/events/{id}/replay` | Re-queue the event for processing |
+| `/admin/agendas` | Agenda CRUD management |
+| `/admin/scores` | Student score CRUD management |
+| `/admin/scores/import` | CSV import for student scores |
+| `/admin/suggestions` | Suggestions list and detail from bot submissions |
 
 Authentication uses HTTP Basic (credentials from `.env`).
 

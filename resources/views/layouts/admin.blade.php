@@ -77,6 +77,14 @@
             padding: .75rem 1rem;
             margin-bottom: 1rem;
         }
+        .alert-danger {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            border-radius: 6px;
+            padding: .75rem 1rem;
+            margin-bottom: 1rem;
+        }
 
         table { width: 100%; border-collapse: collapse; font-size: .9rem; }
         th { text-align: left; border-bottom: 2px solid #e5e7eb; padding: .5rem .75rem; color: #6b7280; }
@@ -104,11 +112,37 @@
         .filter-form { display: flex; gap: .75rem; flex-wrap: wrap; margin-bottom: 1.25rem; align-items: flex-end; }
         .filter-form label { display: block; font-size: .8rem; color: #6b7280; margin-bottom: .2rem; }
         .filter-form select,
+        .filter-form textarea,
         .filter-form input[type=text] {
             padding: .4rem .6rem;
             border: 1px solid #d1d5db;
             border-radius: 5px;
             font-size: .85rem;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1rem;
+        }
+        .form-grid label {
+            display: block;
+            font-size: .85rem;
+            color: #4b5563;
+            margin-bottom: .25rem;
+        }
+        .form-grid input,
+        .form-grid select,
+        .form-grid textarea {
+            width: 100%;
+            padding: .55rem .65rem;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-size: .9rem;
+        }
+        .form-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: .5rem;
         }
 
         pre { background: #f3f4f6; border-radius: 6px; padding: 1rem; overflow-x: auto; font-size: .8rem; }
@@ -131,12 +165,24 @@
 <nav>
     <span class="brand">Webhook Sekolah</span>
     <a href="{{ route('admin.events.index') }}">Events</a>
+    <a href="{{ route('admin.agendas.index') }}">Agendas</a>
+    <a href="{{ route('admin.scores.index') }}">Scores</a>
+    <a href="{{ route('admin.suggestions.index') }}">Suggestions</a>
     <a href="{{ route('todo.index') }}">To-Do</a>
 </nav>
 
 <div class="container">
     @if(session('success'))
         <div class="alert-success">{{ session('success') }}</div>
+    @endif
+    @if($errors->any())
+        <div class="alert-danger">
+            <ul style="margin:0;padding-left:1.1rem">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
     @endif
 
     @yield('content')
