@@ -7,7 +7,7 @@
     <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem">
         <h1 style="margin:0">Student Scores</h1>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-            <a href="{{ route('admin.scores.import.form') }}" class="btn btn-secondary">Import CSV</a>
+            <a href="{{ route('admin.scores.import.form') }}" class="btn btn-secondary">Import Excel / CSV</a>
             <a href="{{ route('admin.scores.create') }}" class="btn btn-primary">+ Create Score</a>
         </div>
     </div>
