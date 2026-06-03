@@ -6,12 +6,12 @@
     <div>
         <label for="agenda_date">Agenda Date</label>
         <input id="agenda_date" type="date" name="agenda_date"
-               value="{{ old('agenda_date', isset($agenda) && $agenda->starts_at ? $agenda->starts_at->format('Y-m-d') : '') }}">
+               value="{{ old('agenda_date', ($agenda ?? null)?->agenda_date ?? ($agenda ?? null)?->starts_at?->format('Y-m-d') ?? '') }}">
     </div>
     <div>
         <label for="agenda_time">Agenda Time</label>
         <input id="agenda_time" type="time" name="agenda_time"
-               value="{{ old('agenda_time', isset($agenda) && $agenda->starts_at ? $agenda->starts_at->format('H:i') : '') }}">
+               value="{{ old('agenda_time', ($agenda ?? null)?->agenda_time ?? ($agenda ?? null)?->starts_at?->format('H:i') ?? '') }}">
     </div>
     <div>
         <label for="location">Location</label>
