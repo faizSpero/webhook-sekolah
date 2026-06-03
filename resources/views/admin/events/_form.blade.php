@@ -36,6 +36,15 @@
         <label for="error_message">Error Message</label>
         <input id="error_message" type="text" name="error_message" value="{{ old('error_message', $event->error_message ?? '') }}">
     </div>
+    <div>
+        <label for="replied_at">Replied At</label>
+        <input id="replied_at" type="datetime-local" name="replied_at"
+               value="{{ old('replied_at', isset($event) && !empty($event->replied_at) ? \Illuminate\Support\Carbon::parse($event->replied_at)->format('Y-m-d\\TH:i') : '') }}">
+    </div>
+    <div style="grid-column:1 / -1">
+        <label for="reply">Reply</label>
+        <textarea id="reply" name="reply" rows="4">{{ old('reply', $event->reply ?? '') }}</textarea>
+    </div>
     <div style="grid-column:1 / -1">
         <label for="payload_json">Payload (JSON)</label>
         <textarea id="payload_json" name="payload_json" rows="6" required>{{ old('payload_json', isset($event) ? json_encode($event->payload, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : '{}') }}</textarea>

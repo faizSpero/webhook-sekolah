@@ -4,6 +4,20 @@
         <input id="title" type="text" name="title" value="{{ old('title', $agenda->title ?? '') }}" required>
     </div>
     <div>
+        <label for="agenda_date">Agenda Date</label>
+        <input id="agenda_date" type="date" name="agenda_date"
+               value="{{ old('agenda_date', isset($agenda) && $agenda->starts_at ? $agenda->starts_at->format('Y-m-d') : '') }}">
+    </div>
+    <div>
+        <label for="agenda_time">Agenda Time</label>
+        <input id="agenda_time" type="time" name="agenda_time"
+               value="{{ old('agenda_time', isset($agenda) && $agenda->starts_at ? $agenda->starts_at->format('H:i') : '') }}">
+    </div>
+    <div>
+        <label for="location">Location</label>
+        <input id="location" type="text" name="location" value="{{ old('location', $agenda->location ?? '') }}">
+    </div>
+    <div>
         <label for="starts_at">Starts At</label>
         <input id="starts_at" type="datetime-local" name="starts_at"
                value="{{ old('starts_at', isset($agenda) && $agenda->starts_at ? $agenda->starts_at->format('Y-m-d\\TH:i') : '') }}" required>

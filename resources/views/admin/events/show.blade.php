@@ -1,9 +1,13 @@
 @extends('layouts.admin')
 
-@section('title', "Event #{{ $event->id }}")
+@section('title', 'Event Detail')
 
 @section('content')
 <div class="card">
+    @php
+        $replyValue = $event->reply ?? data_get($event->payload, 'reply');
+        $repliedAtValue = $event->replied_at ?? data_get($event->payload, 'replied_at');
+    @endphp
     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.75rem;margin-bottom:1rem">
         <h1 style="margin:0">Event #{{ $event->id }}</h1>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
@@ -43,6 +47,8 @@
         </tr>
         <tr><th>Received at</th><td>{{ $event->created_at }}</td></tr>
         <tr><th>Processed at</th><td>{{ $event->processed_at ?? '—' }}</td></tr>
+        <tr><th>Replied at</th><td>{{ $repliedAtValue ?? '—' }}</td></tr>
+        <tr><th>Reply</th><td style="white-space:pre-wrap">{{ $replyValue ?? '—' }}</td></tr>
         @if($event->error_message)
         <tr><th>Error</th><td style="color:#dc2626">{{ $event->error_message }}</td></tr>
         @endif

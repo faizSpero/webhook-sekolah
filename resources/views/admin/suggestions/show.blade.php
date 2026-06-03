@@ -21,6 +21,7 @@
         <tr><th style="width:140px">Sender</th><td>{{ $suggestion->sender_name ?: 'Unknown' }}</td></tr>
         <tr><th>Number</th><td>{{ $suggestion->sender ?: '—' }}</td></tr>
         <tr><th>Source</th><td>{{ $suggestion->source }}</td></tr>
+        <tr><th>Status</th><td>{{ $suggestion->status ?? 'pending' }}</td></tr>
         <tr><th>Created</th><td>{{ $suggestion->created_at->format('Y-m-d H:i:s') }}</td></tr>
     </table>
 

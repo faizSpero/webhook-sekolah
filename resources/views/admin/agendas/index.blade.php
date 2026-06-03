@@ -13,8 +13,9 @@
         <thead>
             <tr>
                 <th>Title</th>
-                <th>Start</th>
-                <th>End</th>
+                <th>Agenda Date</th>
+                <th>Agenda Time</th>
+                <th>Location</th>
                 <th>Status</th>
                 <th></th>
             </tr>
@@ -23,10 +24,14 @@
             @forelse ($agendas as $agenda)
                 <tr>
                     <td>{{ $agenda->title }}</td>
-                    <td>{{ $agenda->starts_at?->format('Y-m-d H:i') }}</td>
-                    <td>{{ $agenda->ends_at?->format('Y-m-d H:i') ?? '—' }}</td>
+                    <td>{{ $agenda->agenda_date ?? $agenda->starts_at?->format('Y-m-d') ?? '—' }}</td>
+                    <td>{{ $agenda->agenda_time ?? $agenda->starts_at?->format('H:i') ?? '—' }}</td>
+                    <td>{{ $agenda->location ?? '—' }}</td>
                     <td>{{ $agenda->is_active ? 'Active' : 'Inactive' }}</td>
                     <td style="white-space:nowrap">
+                        @if(\Illuminate\Support\Facades\Route::has('admin.agendas.show'))
+                            <a class="link" href="{{ route('admin.agendas.show', $agenda) }}">View</a>
+                        @endif
                         <a class="link" href="{{ route('admin.agendas.edit', $agenda) }}">Edit</a>
                         <form method="POST" action="{{ route('admin.agendas.destroy', $agenda) }}" style="display:inline"
                               onsubmit="return confirm('Delete this agenda?')">
@@ -38,7 +43,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="5" style="text-align:center;color:#6b7280;padding:1.5rem">No agendas found.</td>
+                    <td colspan="6" style="text-align:center;color:#6b7280;padding:1.5rem">No agendas found.</td>
                 </tr>
             @endforelse
         </tbody>
