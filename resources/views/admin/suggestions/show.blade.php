@@ -6,7 +6,15 @@
 <div class="card">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem">
         <h1 style="margin:0">Suggestion #{{ $suggestion->id }}</h1>
-        <a class="btn btn-secondary" href="{{ route('admin.suggestions.index') }}">← Back</a>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <a class="btn btn-secondary" href="{{ route('admin.suggestions.index') }}">← Back</a>
+            <a class="btn btn-secondary" href="{{ route('admin.suggestions.edit', $suggestion) }}">Edit</a>
+            <form method="POST" action="{{ route('admin.suggestions.destroy', $suggestion) }}" onsubmit="return confirm('Delete this suggestion?')">
+                @csrf
+                @method('DELETE')
+                <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+        </div>
     </div>
 
     <table style="width:auto;margin-bottom:1rem">

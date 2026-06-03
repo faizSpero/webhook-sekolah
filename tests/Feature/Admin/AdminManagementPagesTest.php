@@ -6,6 +6,8 @@ use App\Models\Agenda;
 use App\Models\Student;
 use App\Models\StudentScore;
 use App\Models\Suggestion;
+use App\Models\Todo;
+use App\Models\WebhookEvent;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Tests\TestCase;
@@ -98,6 +100,120 @@ class AdminManagementPagesTest extends TestCase
         $this->get(route('admin.suggestions.show', $suggestion))
             ->assertOk()
             ->assertSee('Saran menu kantin ditambah.');
+    }
+
+    public function test_webhook_event_manual_crud_pages_work(): void
+    {
+        $createResponse = $this->post(route('admin.events.store'), [
+            'event_id' => 'evt-manual-1',
+            'source' => 'manual',
+            'event_type' => 'student.updated',
+            'status' => WebhookEvent::STATUS_PENDING,
+            'attempts' => 0,
+            'sender_timestamp' => 1717000000,
+            'payload_json' => '{"student_id":"stu-1"}',
+            'headers_json' => '{"x-source":"manual"}',
+        ]);
+
+        $createResponse->assertRedirect(route('admin.events.index'));
+        $event = WebhookEvent::firstOrFail();
+
+        $this->put(route('admin.events.update', $event), [
+            'event_id' => 'evt-manual-1',
+            'source' => 'manual',
+            'event_type' => 'student.synced',
+            'status' => WebhookEvent::STATUS_PROCESSED,
+            'attempts' => 1,
+            'sender_timestamp' => 1717000001,
+            'payload_json' => '{"student_id":"stu-2"}',
+            'headers_json' => '{"x-source":"manual-updated"}',
+            'processed_at' => '2026-06-01 10:00:00',
+        ])->assertRedirect(route('admin.events.index'));
+
+        $this->assertDatabaseHas('webhook_events', [
+            'id' => $event->id,
+            'event_type' => 'student.synced',
+            'status' => WebhookEvent::STATUS_PROCESSED,
+        ]);
+
+        $this->delete(route('admin.events.destroy', $event))
+            ->assertRedirect(route('admin.events.index'));
+
+        $this->assertDatabaseMissing('webhook_events', ['id' => $event->id]);
+    }
+
+    public function test_suggestion_manual_crud_works(): void
+    {
+        $create = $this->post(route('admin.suggestions.store'), [
+            'sender' => '628111',
+            'sender_name' => 'Budi',
+            'source' => 'whatsapp',
+            'message' => 'Tambah jadwal tambahan.',
+        ]);
+
+        $create->assertRedirect(route('admin.suggestions.index'));
+        $suggestion = Suggestion::firstOrFail();
+
+        $this->put(route('admin.suggestions.update', $suggestion), [
+            'sender' => '628111',
+            'sender_name' => 'Budi Updated',
+            'source' => 'whatsapp',
+            'message' => 'Tambah jadwal tambahan sore.',
+        ])->assertRedirect(route('admin.suggestions.index'));
+
+        $this->assertDatabaseHas('suggestions', [
+            'id' => $suggestion->id,
+            'sender_name' => 'Budi Updated',
+        ]);
+
+        $this->delete(route('admin.suggestions.destroy', $suggestion))
+            ->assertRedirect(route('admin.suggestions.index'));
+
+        $this->assertDatabaseMissing('suggestions', ['id' => $suggestion->id]);
+    }
+
+    public function test_todo_manual_crud_works(): void
+    {
+        $create = $this->post(route('admin.todos.store'), [
+            'title' => 'Review proposals',
+            'description' => 'Review all incoming proposals',
+            'due_date' => '2026-06-20',
+            'is_completed' => 0,
+        ]);
+
+        $create->assertRedirect(route('admin.todos.index'));
+        $todo = Todo::firstOrFail();
+
+        $this->put(route('admin.todos.update', $todo), [
+            'title' => 'Review proposals final',
+            'description' => 'Done review',
+            'due_date' => '2026-06-21',
+            'is_completed' => 1,
+        ])->assertRedirect(route('admin.todos.index'));
+
+        $this->assertDatabaseHas('todos', [
+            'id' => $todo->id,
+            'title' => 'Review proposals final',
+            'is_completed' => 1,
+        ]);
+
+        $this->delete(route('admin.todos.destroy', $todo))
+            ->assertRedirect(route('admin.todos.index'));
+
+        $this->assertDatabaseMissing('todos', ['id' => $todo->id]);
+    }
+
+    public function test_dashboard_and_admin_menu_pages_are_accessible(): void
+    {
+        $this->get(route('admin.dashboard'))
+            ->assertOk()
+            ->assertSee('Admin Dashboard');
+
+        $this->get(route('admin.events.index'))->assertOk();
+        $this->get(route('admin.agendas.index'))->assertOk();
+        $this->get(route('admin.scores.index'))->assertOk();
+        $this->get(route('admin.suggestions.index'))->assertOk();
+        $this->get(route('admin.todos.index'))->assertOk();
     }
 
     public function test_student_score_manual_crud_works(): void
