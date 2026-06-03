@@ -4,7 +4,10 @@
 
 @section('content')
 <div class="card">
-    <h1>Suggestions</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem">
+        <h1 style="margin:0">Suggestions</h1>
+        <a href="{{ route('admin.suggestions.create') }}" class="btn btn-primary">+ Create Suggestion</a>
+    </div>
 
     <table>
         <thead>
@@ -24,7 +27,17 @@
                     </td>
                     <td>{{ \Illuminate\Support\Str::limit($suggestion->message, 80) }}</td>
                     <td>{{ $suggestion->created_at->format('Y-m-d H:i') }}</td>
-                    <td><a class="link" href="{{ route('admin.suggestions.show', $suggestion) }}">View</a></td>
+                    <td>
+                        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+                            <a class="link" href="{{ route('admin.suggestions.show', $suggestion) }}">View</a>
+                            <a class="link" href="{{ route('admin.suggestions.edit', $suggestion) }}">Edit</a>
+                            <form method="POST" action="{{ route('admin.suggestions.destroy', $suggestion) }}" onsubmit="return confirm('Delete this suggestion?')">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger" type="submit">Delete</button>
+                            </form>
+                        </div>
+                    </td>
                 </tr>
             @empty
                 <tr>

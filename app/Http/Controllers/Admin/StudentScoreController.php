@@ -65,8 +65,10 @@ class StudentScoreController extends Controller
         return redirect()->route('admin.scores.index')->with('success', 'Student score created successfully.');
     }
 
-    public function edit(StudentScore $score): View
+    public function edit(Request $request, StudentScore $score): View
     {
+        $score = $this->resolveScore($request, $score);
+
         $students = Student::query()->orderBy('name')->limit(200)->get(['id', 'name', 'nisn', 'nis']);
 
         return view('admin.scores.edit', compact('score', 'students'));
@@ -74,6 +76,8 @@ class StudentScoreController extends Controller
 
     public function update(Request $request, StudentScore $score): RedirectResponse
     {
+        $score = $this->resolveScore($request, $score);
+
         $data = $request->validate([
             'student_id'    => ['required', 'exists:students,id'],
             'subject'       => ['required', 'string', 'max:255'],
@@ -89,8 +93,10 @@ class StudentScoreController extends Controller
         return redirect()->route('admin.scores.index')->with('success', 'Student score updated successfully.');
     }
 
-    public function destroy(StudentScore $score): RedirectResponse
+    public function destroy(Request $request, StudentScore $score): RedirectResponse
     {
+        $score = $this->resolveScore($request, $score);
+
         $score->delete();
 
         return redirect()->route('admin.scores.index')->with('success', 'Student score deleted successfully.');
@@ -317,8 +323,8 @@ class StudentScoreController extends Controller
                     'subject'       => $subject,
                     'score'         => $scoreNumber,
                     'score_date'    => $data['score_date'] ?: null,
-                    'semester'      => $data['semester'] ?: null,
-                    'tahun_akademik'=> $data['tahun_akademik'] ?: null,
+                    'semester'      => ($data['semester'] ?? null) ?: null,
+                    'tahun_akademik'=> ($data['tahun_akademik'] ?? null) ?: null,
                     'notes'         => $data['notes'] ?: null,
                 ]);
 
@@ -355,5 +361,16 @@ class StudentScoreController extends Controller
         }
 
         return null;
+    }
+
+    private function resolveScore(Request $request, StudentScore $score): StudentScore
+    {
+        if ($score->exists) {
+            return $score;
+        }
+
+        $id = $request->route('score');
+
+        return StudentScore::query()->findOrFail($id);
     }
 }

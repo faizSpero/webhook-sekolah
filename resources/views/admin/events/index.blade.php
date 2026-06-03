@@ -4,7 +4,10 @@
 
 @section('content')
 <div class="card">
-    <h1>Webhook Events</h1>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:.75rem;flex-wrap:wrap;margin-bottom:1rem">
+        <h1 style="margin:0">Webhook Events</h1>
+        <a href="{{ route('admin.events.create') }}" class="btn btn-primary">+ Create Event</a>
+    </div>
 
     <form class="filter-form" method="GET">
         <div>
@@ -59,7 +62,17 @@
                 <td><span class="badge badge-{{ $event->status }}">{{ $event->status }}</span></td>
                 <td>{{ $event->attempts }}</td>
                 <td>{{ $event->created_at->format('Y-m-d H:i:s') }}</td>
-                <td><a class="link" href="{{ route('admin.events.show', $event) }}">View</a></td>
+                <td>
+                    <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+                        <a class="link" href="{{ route('admin.events.show', $event) }}">View</a>
+                        <a class="link" href="{{ route('admin.events.edit', $event) }}">Edit</a>
+                        <form method="POST" action="{{ route('admin.events.destroy', $event) }}" onsubmit="return confirm('Delete this event?')">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </td>
             </tr>
             @empty
             <tr>

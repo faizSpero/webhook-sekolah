@@ -162,20 +162,35 @@
 </head>
 <body>
 
+@php
+    $menus = [
+        ['label' => 'Dashboard', 'route' => 'admin.dashboard'],
+        ['label' => 'Events', 'route' => 'admin.events.index'],
+        ['label' => 'Agendas', 'route' => 'admin.agendas.index'],
+        ['label' => 'Scores', 'route' => 'admin.scores.index'],
+        ['label' => 'Suggestions', 'route' => 'admin.suggestions.index'],
+        ['label' => 'To-Do', 'route' => 'admin.todos.index'],
+    ];
+@endphp
+
 <nav>
-    <span class="brand">Webhook Sekolah</span>
-    <a href="{{ route('admin.events.index') }}">Events</a>
-    <a href="{{ route('admin.agendas.index') }}">Agendas</a>
-    <a href="{{ route('admin.scores.index') }}">Scores</a>
-    <a href="{{ route('admin.suggestions.index') }}">Suggestions</a>
-    <a href="{{ route('todo.index') }}">To-Do</a>
+    @if(\Illuminate\Support\Facades\Route::has('admin.dashboard'))
+        <a href="{{ route('admin.dashboard') }}" class="brand">Webhook Sekolah</a>
+    @else
+        <span class="brand">Webhook Sekolah</span>
+    @endif
+    @foreach ($menus as $menu)
+        @if(\Illuminate\Support\Facades\Route::has($menu['route']))
+            <a href="{{ route($menu['route']) }}">{{ $menu['label'] }}</a>
+        @endif
+    @endforeach
 </nav>
 
 <div class="container">
     @if(session('success'))
         <div class="alert-success">{{ session('success') }}</div>
     @endif
-    @if($errors->any())
+    @if(isset($errors) && $errors->any())
         <div class="alert-danger">
             <ul style="margin:0;padding-left:1.1rem">
                 @foreach ($errors->all() as $error)

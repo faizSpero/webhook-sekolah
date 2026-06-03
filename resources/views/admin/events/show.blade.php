@@ -8,10 +8,17 @@
         <h1 style="margin:0">Event #{{ $event->id }}</h1>
         <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
             <a href="{{ route('admin.events.index') }}" class="btn btn-secondary">← Back</a>
+            <a href="{{ route('admin.events.edit', $event) }}" class="btn btn-secondary">Edit</a>
             <form method="POST" action="{{ route('admin.events.replay', $event) }}"
                   onsubmit="return confirm('Re-queue this event for processing?')">
                 @csrf
                 <button type="submit" class="btn btn-primary">↺ Replay</button>
+            </form>
+            <form method="POST" action="{{ route('admin.events.destroy', $event) }}"
+                  onsubmit="return confirm('Delete this event?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger">Delete</button>
             </form>
         </div>
     </div>
