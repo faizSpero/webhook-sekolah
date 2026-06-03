@@ -29,6 +29,9 @@
                     <td>{{ $todo->is_completed ? 'Completed' : 'Open' }}</td>
                     <td>
                         <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+                            @if(\Illuminate\Support\Facades\Route::has('admin.todos.show'))
+                                <a class="link" href="{{ route('admin.todos.show', $todo) }}">View</a>
+                            @endif
                             <a class="link" href="{{ route('admin.todos.edit', $todo) }}">Edit</a>
                             <form method="POST" action="{{ route('admin.todos.destroy', $todo) }}" onsubmit="return confirm('Delete this to-do?')">
                                 @csrf

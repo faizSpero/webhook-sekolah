@@ -13,6 +13,7 @@
         <thead>
             <tr>
                 <th>Sender</th>
+                <th>Status</th>
                 <th>Message</th>
                 <th>Created At</th>
                 <th></th>
@@ -25,6 +26,7 @@
                         {{ $suggestion->sender_name ?: 'Unknown' }}<br>
                         <small style="color:#6b7280">{{ $suggestion->sender ?: '-' }}</small>
                     </td>
+                    <td>{{ $suggestion->status ?? 'pending' }}</td>
                     <td>{{ \Illuminate\Support\Str::limit($suggestion->message, 80) }}</td>
                     <td>{{ $suggestion->created_at->format('Y-m-d H:i') }}</td>
                     <td>
@@ -41,7 +43,7 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="4" style="text-align:center;color:#6b7280;padding:1.5rem">No suggestions found.</td>
+                    <td colspan="5" style="text-align:center;color:#6b7280;padding:1.5rem">No suggestions found.</td>
                 </tr>
             @endforelse
         </tbody>

@@ -190,6 +190,9 @@
     @if(session('success'))
         <div class="alert-success">{{ session('success') }}</div>
     @endif
+    @if(session('status'))
+        <div class="alert-success">{{ session('status') }}</div>
+    @endif
     @if(isset($errors) && $errors->any())
         <div class="alert-danger">
             <ul style="margin:0;padding-left:1.1rem">
